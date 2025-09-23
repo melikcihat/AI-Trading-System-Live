@@ -1,0 +1,8 @@
+your-domain.tld {
+    encode gzip
+    
+    @api path /api* /metrics /health
+    reverse_proxy @api api:8000
+    
+    reverse_proxy web:80
+}
