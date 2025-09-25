@@ -39,7 +39,7 @@ export default function StrategyProfilesCard(){
     try {
       const response = await fetch(import.meta.env.VITE_API_URL + '/api/strategy/strategies')
       const data = await response.json()
-      setStrategies(data.strategies || [])
+      // setStrategies(data.strategies || []) // Removed unused variable
     } catch (e) {
       console.error('Error loading strategies:', e)
     }

@@ -16,7 +16,7 @@ export default function SettingsCard(){
       const response = await fetch(import.meta.env.VITE_API_URL + '/api/alerts/status')
       const data = await response.json()
       setAlertStatus(data)
-      setAlertsEnabled(data.enabled)
+      // setAlertsEnabled(data.enabled) // Removed unused variable
     } catch (e) {
       console.error('Error loading settings:', e)
     }
