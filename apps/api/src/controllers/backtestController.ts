@@ -75,7 +75,7 @@ export async function runBacktestCompare(req: Request, res: Response) {
           console.error(`Error in strategy ${strategyConfig.key}:`, error);
           strategyResults.push({
             strategy: strategyConfig.key,
-            error: error.message
+            error: error instanceof Error ? error.message : String(error)
           });
         }
       }
@@ -83,10 +83,10 @@ export async function runBacktestCompare(req: Request, res: Response) {
       // Calculate aggregate result (simplified - just average the metrics)
       const validResults = strategyResults.filter(r => !r.error);
       if (validResults.length > 0) {
-        const avgPnl = validResults.reduce((sum, r) => sum + r.result.pnl, 0) / validResults.length;
-        const avgWinRate = validResults.reduce((sum, r) => sum + r.result.winRate, 0) / validResults.length;
-        const avgMaxDD = validResults.reduce((sum, r) => sum + r.result.maxDD, 0) / validResults.length;
-        const totalTrades = validResults.reduce((sum, r) => sum + r.result.trades.length, 0);
+        const avgPnl = validResults.reduce((sum, r) => sum + (r.result?.pnl || 0), 0) / validResults.length;
+        const avgWinRate = validResults.reduce((sum, r) => sum + (r.result?.winRate || 0), 0) / validResults.length;
+        const avgMaxDD = validResults.reduce((sum, r) => sum + (r.result?.maxDD || 0), 0) / validResults.length;
+        const totalTrades = validResults.reduce((sum, r) => sum + (r.result?.trades?.length || 0), 0);
         
         results.push({
           profileId,

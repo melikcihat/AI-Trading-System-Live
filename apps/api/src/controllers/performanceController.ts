@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { getEquityDaily, getLatestEquity } from '../models/equityDaily';
 import { getTradeExecutions, getTradeStats } from '../models/tradeExecution';
-import { getTradeJournal } from '../models/tradeJournal';
+import { getTradeJournal as getJournal } from '../models/tradeJournal';
 
 export async function getPerformanceSummary(req: Request, res: Response) {
   try {
@@ -129,7 +129,7 @@ export async function getTradeJournal(req: Request, res: Response) {
     const tags = req.query.tags ? (req.query.tags as string).split(',') : undefined;
     const limit = req.query.limit ? parseInt(req.query.limit as string) : 50;
 
-    const journal = await getTradeJournal(userId, symbol, tags, limit);
+    const journal = await getJournal(userId, symbol);
 
     res.json({ journal });
   } catch (error: any) {

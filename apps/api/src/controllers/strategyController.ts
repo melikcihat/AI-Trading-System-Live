@@ -42,12 +42,12 @@ export async function generateMultiSignal(req: Request, res: Response) {
         signals.push(signal);
       } catch (error) {
         console.error(`Error in strategy ${strategyConfig.key}:`, error);
-        signals.push({ side: null, meta: { error: error.message } });
+        signals.push({ side: null, meta: { error: error instanceof Error ? error.message : String(error) } });
       }
     }
     
     // Aggregate signals
-    const finalSignal = aggregate(profile.aggregate_rule, signals, profile.priority_order);
+    const finalSignal = aggregate(profile.aggregate_rule as any, signals, profile.priority_order);
     
     // Create strategy votes for display
     const strategyVotes = getStrategyVotes(signals);

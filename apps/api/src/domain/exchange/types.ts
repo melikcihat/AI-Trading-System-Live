@@ -64,7 +64,6 @@ export interface KlineData {
   low: number;
   close: number;
   volume: number;
-  closeTime: number;
   quoteVolume: number;
   trades: number;
   takerBuyBaseVolume: number;
