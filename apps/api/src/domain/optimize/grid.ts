@@ -99,7 +99,7 @@ export function runGridSearch(input: GridSearchInput): GridSearchResult[] {
       // Run backtest with these parameters
       const backtestResult = runBacktest({
         closes,
-        params,
+        params: params as any,
         feesBps,
         slippageBps,
         initialEquity

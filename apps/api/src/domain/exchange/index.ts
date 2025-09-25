@@ -2,7 +2,7 @@ import { Exchange } from './types';
 import { createMockExchange } from './mock';
 import { createBinanceExchange } from './binance';
 
-export function createExchange(kind: 'mock' | 'binance'): Exchange {
+export function createExchange(kind: 'mock' | 'binance'): any {
   switch (kind) {
     case 'mock':
       return createMockExchange();
@@ -13,7 +13,7 @@ export function createExchange(kind: 'mock' | 'binance'): Exchange {
   }
 }
 
-export function getCurrentExchange(): Exchange {
+export function getCurrentExchange(): any {
   const exchangeType = process.env.EXCHANGE || 'mock';
   return createExchange(exchangeType as 'mock' | 'binance');
 }

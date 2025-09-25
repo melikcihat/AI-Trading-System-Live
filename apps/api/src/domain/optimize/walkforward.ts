@@ -112,10 +112,10 @@ export async function runWalkForward(input: WalkForwardInput): Promise<WalkForwa
         ...Object.fromEntries(
           Object.entries(firstStrategy.params).map(([key, value]) => [
             key, 
-            [value * 0.8, value, value * 1.2] // ±20% range
+            [(value as number) * 0.8, value as number, (value as number) * 1.2] // ±20% range
           ])
         )
-      }
+      } as Record<string, number[]>
     };
   } else if (strategy) {
     strategyConfig = strategy;
@@ -162,7 +162,7 @@ export async function runWalkForward(input: WalkForwardInput): Promise<WalkForwa
     try {
       const testResult = runBacktest({
         closes: testCloses,
-        params: bestParams,
+        params: bestParams as any,
         feesBps,
         slippageBps,
         initialEquity

@@ -104,14 +104,14 @@ export async function runPreFlightChecks(req: Request, res: Response) {
         sessionWindow: process.env.SESSION_WINDOW ? JSON.parse(process.env.SESSION_WINDOW) : null,
         emergencyManager: false,
         tradingAllowed: false,
-        error: null
+        error: null as string | null
       },
       exchange: {
         type: process.env.EXCHANGE || 'mock',
         apiKey: !!process.env.BINANCE_API_KEY,
         apiSecret: !!process.env.BINANCE_API_SECRET,
         connected: false,
-        error: null
+        error: null as string | null
       },
       alerts: {
         enabled: process.env.ALERTS_ENABLED === 'true',
