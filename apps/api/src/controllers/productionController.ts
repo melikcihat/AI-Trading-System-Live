@@ -101,12 +101,17 @@ export async function runPreFlightChecks(req: Request, res: Response) {
       safety: {
         safetyLock: process.env.SAFETY_LOCK === 'true',
         allowedSymbols: (process.env.ALLOWED_SYMBOLS || '').split(',').filter(s => s),
-        sessionWindow: process.env.SESSION_WINDOW ? JSON.parse(process.env.SESSION_WINDOW) : null
+        sessionWindow: process.env.SESSION_WINDOW ? JSON.parse(process.env.SESSION_WINDOW) : null,
+        emergencyManager: false,
+        tradingAllowed: false,
+        error: null
       },
       exchange: {
         type: process.env.EXCHANGE || 'mock',
         apiKey: !!process.env.BINANCE_API_KEY,
-        apiSecret: !!process.env.BINANCE_API_SECRET
+        apiSecret: !!process.env.BINANCE_API_SECRET,
+        connected: false,
+        error: null
       },
       alerts: {
         enabled: process.env.ALERTS_ENABLED === 'true',
@@ -124,7 +129,7 @@ export async function runPreFlightChecks(req: Request, res: Response) {
       checks.exchange.connected = true;
     } catch (error) {
       checks.exchange.connected = false;
-      checks.exchange.error = error.message;
+      checks.exchange.error = error instanceof Error ? error.message : String(error);
     }
 
     // Test emergency manager
@@ -134,7 +139,7 @@ export async function runPreFlightChecks(req: Request, res: Response) {
       checks.safety.tradingAllowed = emergencyManager.isTradingAllowed();
     } catch (error) {
       checks.safety.emergencyManager = false;
-      checks.safety.error = error.message;
+      checks.safety.error = error instanceof Error ? error.message : String(error);
     }
 
     const allChecksPass = 

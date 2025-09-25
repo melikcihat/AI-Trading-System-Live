@@ -1,4 +1,4 @@
-import { pool } from './database';
+import pool from './database';
 
 export interface AuditLog {
   id?: number;
@@ -33,7 +33,7 @@ export async function getAuditLogs(limit: number = 100, userId?: number): Promis
   
   const result = await pool.query(query, values);
   
-  return result.rows.map(row => ({
+  return result.rows.map((row: any) => ({
     id: row.id,
     userId: row.user_id,
     action: row.action,
