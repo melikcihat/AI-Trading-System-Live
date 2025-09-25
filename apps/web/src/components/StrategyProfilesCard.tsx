@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 
 export default function StrategyProfilesCard(){
   const [profiles, setProfiles] = useState<any[]>([])
-  const [strategies, setStrategies] = useState<any[]>([])
   const [showCreate, setShowCreate] = useState(false)
   const [editingProfile, setEditingProfile] = useState<any>(null)
   const [loading, setLoading] = useState(false)
@@ -138,7 +137,7 @@ export default function StrategyProfilesCard(){
 
   const updateStrategyParam = (strategyIndex: number, param: string, value: number) => {
     const newStrategies = [...formData.strategies]
-    newStrategies[strategyIndex].params[param] = value
+    ;(newStrategies[strategyIndex].params as any)[param] = value
     setFormData({ ...formData, strategies: newStrategies })
   }
 

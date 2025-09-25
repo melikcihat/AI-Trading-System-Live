@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 export default function LiveTradingCard(){
   const [symbol, setSymbol] = useState('BTCUSDT')
   const [interval, setInterval] = useState('1m')
-  const [currentPrice, setCurrentPrice] = useState<number | null>(null)
+  const [currentPrice] = useState<number | null>(null)
   const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'connected' | 'disconnected'>('connecting')
   const [lastSignal, setLastSignal] = useState<any>(null)
   const [riskPreview, setRiskPreview] = useState<any>(null)

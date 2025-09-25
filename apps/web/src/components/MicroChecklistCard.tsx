@@ -54,13 +54,6 @@ export default function MicroChecklistCard(){
     }
   }
 
-  const getStatusColor = (condition: boolean, expected: boolean = true) => {
-    if (condition === expected) {
-      return 'text-green-600'
-    } else {
-      return 'text-red-600'
-    }
-  }
 
   return (
     <div className="card space-y-4">

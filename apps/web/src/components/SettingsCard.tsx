@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 
 export default function SettingsCard(){
-  const [alertsEnabled, setAlertsEnabled] = useState(false)
   const [safetyLock, setSafetyLock] = useState(false)
   const [alertStatus, setAlertStatus] = useState<any>(null)
   const [testLoading, setTestLoading] = useState(false)

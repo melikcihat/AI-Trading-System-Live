@@ -160,7 +160,7 @@ export default function FlipPlanCard(){
       },
       risk: {
         level: summary.maxDD > 0.01 ? 'HIGH' : summary.profitFactor < 1.1 ? 'MEDIUM' : 'LOW',
-        triggers: []
+        triggers: [] as string[]
       }
     }
     

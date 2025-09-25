@@ -4,8 +4,6 @@ export default function PerformanceDashboard(){
   const [summary, setSummary] = useState<any>(null)
   const [equityCurve, setEquityCurve] = useState<any[]>([])
   const [heatmap, setHeatmap] = useState<any>(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
   const [fromDate, setFromDate] = useState('')
   const [toDate, setToDate] = useState('')
   const [year, setYear] = useState(new Date().getFullYear())
