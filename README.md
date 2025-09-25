@@ -1,264 +1,190 @@
-# HubAI Trader - AI-Powered Cryptocurrency Trading Platform
+# HubAI Trader
 
-🚀 **Professional AI trading platform with advanced risk management, backtesting, and live trading capabilities.**
+AI-powered cryptocurrency trading platform with risk management and live market data integration.
 
-## 🌟 Features
+## Features
 
-### Core Trading
-- **AI Signal Generation**: EMA/RSI, Donchian Breakout, Bollinger Mean Reversion
-- **Multi-Strategy Aggregation**: Priority and Majority voting systems
-- **Real-time Risk Management**: Position sizing, stop-loss, take-profit
-- **Live Trading**: Binance integration with safety guards
+- **Signal Generation**: EMA/RSI-based trading signals
+- **Risk Management**: Position sizing, stop loss, take profit calculations
+- **Backtesting**: Historical strategy performance analysis
+- **Live Trading**: Real-time market data and order placement
+- **Exchange Integration**: Binance API support with mock exchange for testing
+- **Alerts**: Telegram and Discord notifications
+- **Safety Controls**: Emergency stop, daily loss limits, position size limits
 
-### Advanced Analytics
-- **Backtesting Engine**: Historical performance analysis
-- **Grid-Search Optimization**: Parameter optimization
-- **Walk-Forward Analysis**: Out-of-sample validation
-- **Performance Dashboard**: Real-time metrics and equity curves
+## Architecture
 
-### Risk & Safety
-- **Emergency Controls**: Panic stop, partial stop, safety lock
-- **Daily Loss Limits**: Automatic trading halt on losses
-- **Idempotency**: Duplicate order prevention
-- **Audit Logging**: Complete trading history
+- **Backend**: Node.js + Express + TypeScript
+- **Frontend**: React + Vite + Tailwind CSS
+- **Database**: PostgreSQL
+- **Exchange**: Binance API (with testnet support)
+- **Deployment**: Docker + Docker Compose
 
-### User Experience
-- **Strategy Profiles**: Multiple strategy configurations
-- **Trade Journal**: Tagged trade notes and analysis
-- **Alert System**: Telegram/Discord notifications
-- **Responsive UI**: Modern React + Tailwind CSS
+## Quick Start
 
-## 🏗️ Architecture
+### Development
 
-```
-├── apps/
-│   ├── api/          # Node.js/Express backend
-│   └── web/          # React frontend
-├── src/
-│   ├── domain/       # Business logic
-│   ├── models/       # Database models
-│   ├── routes/       # API endpoints
-│   └── middleware/   # Express middleware
-└── scripts/          # Deployment & utility scripts
-```
+1. **Clone and setup**:
+   ```bash
+   git clone <repository>
+   cd hubai-trader
+   npm install
+   ```
 
-## 🚀 Quick Start
+2. **Environment setup**:
+   ```bash
+   cp env.production.example .env.production
+   # Edit .env.production with your API keys and settings
+   ```
 
-### Prerequisites
-- Node.js 18+
-- PostgreSQL
-- Binance API keys
+3. **Database setup**:
+   ```bash
+   # Start PostgreSQL
+   docker run -d --name postgres -e POSTGRES_PASSWORD=password -p 5432:5432 postgres:16-alpine
+   
+   # Run migrations
+   cd apps/api
+   npm run migrate
+   ```
 
-### Installation
+4. **Start development servers**:
+   ```bash
+   # Backend
+   cd apps/api
+   npm run dev
+   
+   # Frontend (in another terminal)
+   cd apps/web
+   npm run dev
+   ```
 
-1. **Clone repository**
-```bash
-git clone https://github.com/yourusername/hubai-trader.git
-cd hubai-trader
-```
+### Production Deployment
 
-2. **Install dependencies**
-```bash
-npm install
-cd apps/api && npm install
-cd ../web && npm install
-```
+1. **Build and deploy**:
+   ```bash
+   docker-compose -f docker-compose.prod.yml up -d --build
+   ```
 
-3. **Environment setup**
-```bash
-# Copy environment template
-cp .env.example .env
+2. **Configure domain**:
+   - Update `deploy/caddy/Caddyfile` with your domain
+   - Update `FRONTEND_ORIGIN` in `.env.production`
 
-# Configure your settings
-BINANCE_API_KEY=your_api_key
-BINANCE_API_SECRET=your_secret
-DATABASE_URL=postgresql://user:pass@localhost:5432/hubai_trader
-```
+3. **SSL/TLS**:
+   - Caddy automatically handles Let's Encrypt certificates
+   - Ensure ports 80 and 443 are open
 
-4. **Database setup**
-```bash
-cd apps/api
-npm run migrate
-```
-
-5. **Start development servers**
-```bash
-# Backend (Terminal 1)
-cd apps/api
-npm run dev
-
-# Frontend (Terminal 2)
-cd apps/web
-npm run dev
-```
-
-6. **Access application**
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:8000
-
-## 📊 Trading Features
-
-### Strategy Library
-- **EMA/RSI Crossover**: Trend following with momentum
-- **Donchian Breakout**: Channel breakout strategy
-- **Bollinger Mean Reversion**: Mean reversion with volatility
-
-### Risk Management
-- **Position Sizing**: Kelly criterion and fixed percentage
-- **Stop Loss/Take Profit**: Automatic exit management
-- **Daily Loss Limits**: Configurable risk controls
-- **Symbol Restrictions**: Whitelist/blacklist management
-
-### Performance Analytics
-- **Real-time Metrics**: PnL, win rate, max drawdown
-- **Equity Curves**: Visual performance tracking
-- **Monthly Heatmaps**: Return visualization
-- **Trade Analysis**: Detailed trade breakdowns
-
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables
 
-```bash
-# Exchange Configuration
-BINANCE_API_KEY=your_api_key
-BINANCE_API_SECRET=your_secret
-BINANCE_TESTNET=true
+#### API Configuration
+- `NODE_ENV`: production/development
+- `PORT`: API server port (default: 8000)
+- `JWT_SECRET`: JWT signing secret
+- `SAFETY_LOCK`: Enable/disable trading (true/false)
+- `DAILY_LOSS_LIMIT_PCT`: Daily loss limit (default: 0.03)
+- `MAX_ORDER_NOTIONAL_PCT`: Max position size (default: 0.30)
 
-# Database
-DATABASE_URL=postgresql://user:pass@host:port/db
+#### Exchange Configuration
+- `EXCHANGE`: binance/mock
+- `BINANCE_API_KEY`: Binance API key
+- `BINANCE_SECRET_KEY`: Binance secret key
+- `BINANCE_USE_TESTNET`: Use testnet (true/false)
 
-# Risk Management
-MAX_ORDER_NOTIONAL_PCT=0.01
-DAILY_LOSS_LIMIT_PCT=0.01
-SAFETY_LOCK=false
+#### Alert Configuration
+- `ALERTS_ENABLED`: Enable alerts (true/false)
+- `TELEGRAM_BOT_TOKEN`: Telegram bot token
+- `TELEGRAM_CHAT_ID`: Telegram chat ID
+- `DISCORD_WEBHOOK_URL`: Discord webhook URL
 
-# Alerts
-TELEGRAM_BOT_TOKEN=your_bot_token
-TELEGRAM_CHAT_ID=your_chat_id
-DISCORD_WEBHOOK_URL=your_webhook_url
+## Security
+
+- **API Keys**: Stored server-side only, never exposed to frontend
+- **Safety Locks**: Multiple layers of trading protection
+- **Rate Limiting**: API endpoint protection
+- **HTTPS**: Enforced in production
+- **Audit Logging**: All actions logged
+
+## API Endpoints
+
+### Health & Status
+- `GET /api/health` - Health check
+- `GET /api/market-data/status` - Connection status
+
+### Trading
+- `POST /api/signal` - Generate trading signal
+- `POST /api/risk/preview` - Risk calculation
+- `POST /api/risk/validate` - Risk validation
+- `POST /api/orders` - Place order
+- `DELETE /api/orders/:id` - Cancel order
+
+### Strategy
+- `GET /api/strategy/params` - Get strategy parameters
+- `POST /api/strategy/params` - Update strategy parameters
+
+### Backtesting
+- `POST /api/backtest/run` - Run backtest
+
+### Alerts & Monitoring
+- `GET /api/alerts/status` - Alert configuration status
+- `POST /api/alerts/test` - Send test alert
+- `GET /api/audit` - Audit logs
+- `GET /metrics` - Prometheus metrics
+
+## Development
+
+### Project Structure
+```
+├── apps/
+│   ├── api/                 # Backend API
+│   │   ├── src/
+│   │   │   ├── controllers/ # Request handlers
+│   │   │   ├── domain/      # Business logic
+│   │   │   ├── middleware/  # Express middleware
+│   │   │   ├── models/      # Database models
+│   │   │   ├── routes/      # API routes
+│   │   │   └── utils/       # Utilities
+│   │   └── Dockerfile
+│   └── web/                 # Frontend React app
+│       ├── src/
+│       │   ├── components/  # React components
+│       │   └── App.tsx
+│       └── Dockerfile
+├── deploy/                  # Deployment configs
+│   ├── nginx/              # Nginx config
+│   └── caddy/              # Caddy config
+└── docker-compose.prod.yml # Production compose
 ```
 
-### Strategy Configuration
+### Adding New Features
 
-```typescript
-// Example strategy profile
-{
-  "name": "BTCUSDT Conservative",
-  "symbol": "BTCUSDT",
-  "timeframe": "5m",
-  "strategies": [
-    {
-      "key": "EMA_RSI",
-      "params": { "fast": 9, "slow": 21, "rsi": 55 }
-    }
-  ],
-  "aggregateRule": "PRIORITY",
-  "priorityOrder": ["EMA_RSI"]
-}
-```
+1. **Backend**: Add routes in `apps/api/src/routes/`
+2. **Frontend**: Add components in `apps/web/src/components/`
+3. **Database**: Add migrations in `migrations/`
+4. **Tests**: Add tests in respective test directories
 
-## 🚨 Safety Features
+## Monitoring
 
-### Emergency Controls
-- **Panic Stop**: Immediate halt of all trading
-- **Partial Stop**: Stop specific symbols
-- **Safety Lock**: Disable trading system-wide
-- **Session Windows**: Time-based trading restrictions
+- **Health Checks**: Built-in health endpoints
+- **Metrics**: Prometheus metrics at `/metrics`
+- **Logs**: Structured JSON logging
+- **Audit**: All actions logged to database
 
-### Risk Monitoring
-- **Real-time PnL**: Live profit/loss tracking
-- **Drawdown Alerts**: Automatic notifications
-- **Error Budget**: System reliability monitoring
-- **WebSocket Health**: Connection monitoring
-
-## 📈 Deployment
-
-### Vercel (Frontend)
-```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Deploy
-cd apps/web
-vercel --prod
-```
-
-### Railway (Backend)
-```bash
-# Connect GitHub repository
-# Configure environment variables
-# Deploy automatically on push
-```
-
-### Docker
-```bash
-# Build and run with Docker Compose
-docker-compose up -d
-```
-
-## 🔒 Security
-
-- **API Key Encryption**: AES-256 encryption
-- **JWT Authentication**: Secure user sessions
-- **Rate Limiting**: API abuse prevention
-- **Input Validation**: SQL injection protection
-- **Audit Logging**: Complete action history
-
-## 📊 API Documentation
-
-### Core Endpoints
-
-```bash
-# Signal Generation
-POST /api/signal
-{
-  "closes": [100, 101, 102, ...],
-  "params": { "fast": 9, "slow": 21, "rsi": 55 }
-}
-
-# Backtesting
-POST /api/backtest
-{
-  "closes": [...],
-  "params": {...},
-  "feesBps": 8,
-  "slippageBps": 5
-}
-
-# Performance
-GET /api/performance/summary
-GET /api/performance/curve
-GET /api/performance/heatmap
-
-# Emergency Controls
-POST /api/emergency/panic-stop
-POST /api/emergency/partial-stop
-PUT /api/emergency/controls
-```
-
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
-2. Create feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open Pull Request
+2. Create a feature branch
+3. Make your changes
+4. Add tests
+5. Submit a pull request
 
-## 📄 License
+## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License - see LICENSE file for details
 
-## ⚠️ Disclaimer
+## Support
 
-**This software is for educational and research purposes only. Cryptocurrency trading involves substantial risk of loss. Past performance does not guarantee future results. Use at your own risk.**
-
-## 🆘 Support
-
-- **Issues**: [GitHub Issues](https://github.com/yourusername/hubai-trader/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/hubai-trader/discussions)
-- **Documentation**: [Wiki](https://github.com/yourusername/hubai-trader/wiki)
-
----
-
-**Built with ❤️ for the trading community**
+For issues and questions:
+- Create an issue on GitHub
+- Check the documentation
+- Review the audit logs for debugging

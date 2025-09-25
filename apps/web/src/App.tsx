@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import HealthBadge from './components/HealthBadge'
 import SignalCard from './components/SignalCard'
 import RiskPreview from './components/RiskPreview'
