@@ -2,7 +2,7 @@
 FROM node:20-alpine AS build
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci --omit=dev=false
+RUN npm ci
 COPY . .
 RUN npm run build
 RUN npm prune --omit=dev
@@ -13,7 +13,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/package*.json ./
-RUN npm ci --omit=dev
+RUN npm ci --production
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nodejs -u 1001
 USER nodejs
