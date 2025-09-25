@@ -472,11 +472,11 @@ export default function FlipPlanCard(){
           </div>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-            <span>PF < 1.1 for 2+ hours → lock</span>
+            <span>PF &lt; 1.1 for 2+ hours → lock</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-            <span>MaxDD ≥ 1% → lock</span>
+            <span>MaxDD &ge; 1% → lock</span>
           </div>
         </div>
       </div>
