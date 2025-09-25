@@ -50,7 +50,7 @@ export function idempotencyMiddleware(ttl: number = DEFAULT_TTL) {
       if (chunk) {
         responseBody = chunk;
       }
-      return originalEnd.call(this, chunk);
+      return originalEnd.call(this, chunk, encoding, callback);
     };
 
     // Store the response when it's sent
